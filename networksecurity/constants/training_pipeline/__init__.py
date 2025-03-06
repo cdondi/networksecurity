@@ -24,7 +24,7 @@ MODEL_FILE_NAME = "model.pkl"
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """
 DATA_INGESTION_COLLECTION_NAME: str = "NetworkData"
-DATA_INGESTION_DATABASE_NAME: str = "KRISHAI"
+DATA_INGESTION_DATABASE_NAME: str = "CLIVED"
 DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
 DATA_INGESTION_INGESTED_DIR: str = "ingested"
