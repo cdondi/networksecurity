@@ -29,7 +29,7 @@ from urllib.parse import urlparse
 
 import dagshub
 
-# dagshub.init(repo_owner='cdondi', repo_name='networksecurity', mlflow=True)
+dagshub.init(repo_owner="cdondi", repo_name="networksecurity", mlflow=True)
 
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/cdondi/networksecurity.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "cdondi"
