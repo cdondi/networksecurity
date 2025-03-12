@@ -30,8 +30,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Utilities
-        run: sudo apt-get update
-          sudo apt-get install -y jq unzip
+        run: sudo apt-get update && sudo apt-get install -y jq unzip
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
