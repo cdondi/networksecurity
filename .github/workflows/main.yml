@@ -81,15 +81,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Print Encoded Secrets (For Debugging)
-        run: |
-          echo "AWS_ACCESS_KEY (encoded): $(echo -n $AWS_ACCESS_KEY | base64)"
-          echo "AWS_SECRET_KEY (encoded): $(echo -n $AWS_SECRET_KEY | base64)"
-          echo "ECR_LOGIN_URL (encoded): $(echo -n $ECR_LOGIN_URL | base64)"
-          echo "REPOSITORY_NAME (encoded): $(echo -n $REPOSITORY_NAME | base64)"
-          echo "IMAGE_TAG (encoded): $(echo -n $IMAGE_TAG | base64)"
-          echo "AWS_REGION (encoded): $(echo -n $AWS_REGION | base64)"
-
       - name: Pull Docker Image from Amazon ECR
         env:
           ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
@@ -99,20 +90,13 @@ jobs:
           docker pull $ECR_LOGIN_URL/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Run Docker Image to serve users
-        # env:
-        #   AWS_ACCESS_KEY: ${{ steps.login-ecr.outputs.accessKeyId }}
-        #   AWS_SECRET_KEY: ${{ steps.login-ecr.outputs.secretAccessKey }}
-        #   REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY_NAME }}
-        #   REPOSITORY_NAME_B: ${{ steps.login-ecr.outputs.repository }}
-        #   ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
-        #   IMAGE_TAG: latest
-        #   AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           echo "ECR_LOGIN_URL=$ECR_LOGIN_URL"
           echo "REPOSITORY_NAME=$REPOSITORY_NAME"
           echo "IMAGE_TAG=$IMAGE_TAG"
           echo "AWS_REGION=$AWS_REGION"
 
+          # First partially working version
           docker run -d -p 8080:8080 --ipc="host" --name "$REPOSITORY_NAME" \
           -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
           -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \

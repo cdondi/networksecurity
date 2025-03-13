@@ -29,7 +29,20 @@ from urllib.parse import urlparse
 
 import dagshub
 
-dagshub.init(repo_owner="cdondi", repo_name="networksecurity", mlflow=True)
+# Debugging: Print environment variables
+print("DAGSHUB_USER:", os.getenv("DAGSHUB_USER"))
+print("DAGSHUB_TOKEN:", os.getenv("DAGSHUB_TOKEN"))
+print("AWS_ACCESS_KEY_ID:", os.getenv("AWS_ACCESS_KEY_ID"))
+print("AWS_SECRET_ACCESS_KEY:", os.getenv("AWS_SECRET_ACCESS_KEY"))
+print("AWS_REGION:", os.getenv("AWS_REGION"))
+
+# Initialize Dagshub with credentials
+dagshub.init(
+    repo_owner="cdondi",
+    repo_name="networksecurity",
+    mlflow=True,
+    credentials=(os.getenv("DAGSHUB_USER"), os.getenv("DAGSHUB_TOKEN")),
+)
 
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/cdondi/networksecurity.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "cdondi"
