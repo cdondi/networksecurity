@@ -7,6 +7,14 @@ on:
     paths-ignore:
       - "README.md"
 
+env:
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY_NAME }}
+  ECR_LOGIN_URL: ${{ secrets.AWS_ECR_LOGIN_URI }}
+  IMAGE_TAG: latest
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
 jobs:
   integration:
     name: Continuous Integration
@@ -74,24 +82,32 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Pull Docker Image from Amazon ECR
-        env:
-          ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
-          IMAGE_TAG: latest
+        # env:
+        #   ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
+        #   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
+        #   IMAGE_TAG: latest
         run: |
           docker pull $ECR_LOGIN_URL/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Run Docker Image to serve users
-        env:
-          AWS_ACCESS_KEY: ${{ steps.login-ecr.outputs.accessKeyId }}
-          AWS_SECRET_KEY: ${{ steps.login-ecr.outputs.secretAccessKey }}
-          REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY_NAME }}
-          REPOSITORY_NAME_B: ${{ steps.login-ecr.outputs.repository }}
-          ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+        # env:
+        #   AWS_ACCESS_KEY: ${{ steps.login-ecr.outputs.accessKeyId }}
+        #   AWS_SECRET_KEY: ${{ steps.login-ecr.outputs.secretAccessKey }}
+        #   REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY_NAME }}
+        #   REPOSITORY_NAME_B: ${{ steps.login-ecr.outputs.repository }}
+        #   ECR_LOGIN_URL: ${{ steps.login-ecr.outputs.registry }}
+        #   IMAGE_TAG: latest
+        #   AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          docker run -d -p 8080:8080 --ipc="host" --name=$REPOSITORY_NAME
+          echo "ECR_LOGIN_URL=$ECR_LOGIN_URL"
+          echo "REPOSITORY_NAME=$REPOSITORY_NAME"
+          echo "IMAGE_TAG=$IMAGE_TAG"
+
+          docker run -d -p 8080:8080 --ipc="host" --name "$REPOSITORY_NAME" \
+          -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
+          -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
+          -e AWS_REGION="$AWS_REGION" \
+          "$ECR_LOGIN_URL/$REPOSITORY_NAME:$IMAGE_TAG"
 
       - name: Clean previous images and containers
         id: cleanup
