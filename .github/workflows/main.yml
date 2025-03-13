@@ -73,9 +73,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Pull Docker Image from Amazon ECR
+      - name: Set Environment Variables
         run: |
-          docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          echo "AWS_ECR_LOGIN_URI=${{ secrets.AWS_ECR_LOGIN_URI }}" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY_NAME=${{ secrets.ECR_REPOSITORY_NAME }}" >> $GITHUB_ENV
+
+      - name: Pull Docker Image from Amazon ECR
+        run: docker pull $AWS_ECR_LOGIN_URI/$ECR_REPOSITORY_NAME:latest
 
       - name: Run Docker Image to serve users
         run: |
