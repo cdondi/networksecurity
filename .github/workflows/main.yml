@@ -14,6 +14,9 @@ env:
   ECR_LOGIN_URL: ${{ secrets.AWS_ECR_LOGIN_URI }}
   IMAGE_TAG: latest
   AWS_REGION: ${{ secrets.AWS_REGION }}
+  DAGSHUB_USER: ${{ secrets.DAGSHUB_USER }}
+  DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+  TEST_CLIVED: clive_d_test
 
 jobs:
   integration:
