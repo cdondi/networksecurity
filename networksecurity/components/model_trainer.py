@@ -1,5 +1,6 @@
 import os
 import sys
+import dagshub.auth
 import numpy as np
 from mlflow.models.signature import infer_signature
 
@@ -39,6 +40,7 @@ print("TEST_CLIVED:", os.getenv("TEST_CLIVED"))
 
 
 # Initialize Dagshub with credentials
+dagshub.auth.add_app_token(os.getenv("DAGSHUB_TOKEN"))
 dagshub.init(repo_owner="cdondi", repo_name="networksecurity", mlflow=True)
 
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/cdondi/networksecurity.mlflow"
