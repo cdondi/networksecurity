@@ -100,7 +100,7 @@ jobs:
           echo "AWS_REGION=$AWS_REGION"
 
           # First partially working version
-          docker run --privileged -d -p 8080:8080 --ipc="host" --name "$REPOSITORY_NAME" \
+          docker run --privileged -d -p 8080:8000 --ipc="host" --name "$REPOSITORY_NAME" \
           -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
           -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
           -e AWS_REGION="$AWS_REGION" \
