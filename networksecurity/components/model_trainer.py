@@ -37,12 +37,7 @@ print("AWS_SECRET_ACCESS_KEY:", os.getenv("AWS_SECRET_ACCESS_KEY"))
 print("AWS_REGION:", os.getenv("AWS_REGION"))
 
 # Initialize Dagshub with credentials
-dagshub.init(
-    repo_owner="cdondi",
-    repo_name="networksecurity",
-    mlflow=True,
-    credentials=(os.getenv("DAGSHUB_USER"), os.getenv("DAGSHUB_TOKEN")),
-)
+dagshub.init(repo_owner="cdondi", repo_name="networksecurity", mlflow=True)
 
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/cdondi/networksecurity.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "cdondi"
